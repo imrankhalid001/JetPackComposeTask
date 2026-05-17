@@ -1,4 +1,4 @@
-package com.imidroid.jetpackcomposetask.ui.theme
+package com.imidroid.jetpackcomposetask.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
