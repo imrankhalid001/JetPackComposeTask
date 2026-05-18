@@ -22,13 +22,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             JetpackComposeTaskTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                    Surface(
-                        modifier = Modifier.padding(innerPadding){
-                            val viewModel : ProductViewModel = viewModel()
-                            ProductManager(viewModel)
-                        }
-                    )
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Surface(Modifier.padding(innerPadding)) {
+                        val viewModel : ProductViewModel = viewModel()
+                        ProductManager(viewModel)
+                    }
                 }
             }
         }

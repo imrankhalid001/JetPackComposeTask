@@ -2,9 +2,7 @@ package com.imidroid.jetpackcomposetask.presentation.screen.product
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -70,41 +68,78 @@ fun ProductManager(viewModel: ProductViewModel) {
             SnackbarHost(snackbarHostState)
         }
 
-    ) {paddingValues ->
+    ) { paddingValues ->
 
-        when(val state = uiState)
-        {
+        when (val state = uiState) {
             is UiState.Loading -> {
                 Box(
-                    modfifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                )
-                {
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     CircularProgressIndicator()
                 }
             }
 
             is UiState.Success -> {
-
+                ProductList(
+                    product = state.products,
+                    onEdit = { product->
+                        selectedProduct = product
+                        showEditProduct = true
+                    },
+                    onDelete = {
+                        viewModel.deleteProduct(it.id)
+                    },
+                    onPatch = {
+                        viewModel.patchProduct(it.id,"${it.title}(PATCH)")
+                    },
+                    modifier = Modifier.padding(paddingValues)
+                )
             }
 
             is UiState.Error -> {
                 Box(
-                    modfifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
-                )
-                {
+                ) {
                     Text("Error : ${state.message}")
                 }
             }
-
-
         }
-
-        }
-
+    }
 
 
+    if(showAddProduct) {
+        ProductDetailForm(
+            title = "Add Product",
+            product = null,
+            onDismiss = {
+                showAddProduct = false
+            },
+            onSave = { product ->
+                viewModel.createProducts(product)
+                showAddProduct = false
+            }
+        )
+    }
+
+    if (showEditProduct){
+        ProductDetailForm(
+            title = " Edit Product",
+            product = selectedProduct,
+            onDismiss = {
+                showEditProduct = false
+                selectedProduct = null
+            },
+            onSave = { product ->
+                selectedProduct?.let {
+                    viewModel.updateProduct(it.id, product)
+                }
+                showEditProduct =false
+                selectedProduct = null
+            }
+        )
+    }
 
 
 }
