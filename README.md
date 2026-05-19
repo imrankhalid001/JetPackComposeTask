@@ -45,8 +45,6 @@ The project is structured following **Clean Architecture** principles, divided i
 | :---: | :---: | :---: |
 | ![List](screenshots/list.jpg) | ![Detail](screenshots/detail.jpg) | ![Add](screenshots/add.jpg) |
 
-*(Note: Please add your actual screenshots to the `screenshots/` folder)*
-
 ## 🚦 Getting Started
 
 ### Prerequisites
