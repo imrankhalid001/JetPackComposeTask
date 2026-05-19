@@ -56,7 +56,7 @@ The project is structured following **Clean Architecture** principles, divided i
 ### Installation
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/your-username/Retrofit_AppDhaRa.git
+    git clone https://github.com/imrankhalid001/JetPackComposeTask.git
     ```
 2.  Open the project in Android Studio.
 3.  Sync Gradle and run the app on an emulator or physical device.
