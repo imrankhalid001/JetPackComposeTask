@@ -43,7 +43,7 @@ The project is structured following **Clean Architecture** principles, divided i
 
 | Product List | Product Detail | Add Product |
 | :---: | :---: | :---: |
-| ![List](screenshots/list.png) | ![Detail](screenshots/detail.png) | ![Add](screenshots/add.png) |
+| ![List](screenshots/list.jpg) | ![Detail](screenshots/detail.jpg) | ![Add](screenshots/add.jpg) |
 
 *(Note: Please add your actual screenshots to the `screenshots/` folder)*
 
