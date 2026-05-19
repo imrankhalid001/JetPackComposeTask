@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.imidroid.jetpackcomposetask.domain.model.Product
 import com.imidroid.jetpackcomposetask.domain.repository.ProductRepository
 import com.imidroid.jetpackcomposetask.presentation.screen.productstate.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProductViewModel  @Inject constructor(
     private val repository: ProductRepository
 ) : ViewModel(){
@@ -52,7 +54,7 @@ class ProductViewModel  @Inject constructor(
     }
 
 
-    fun createProduct(product: Product){
+    fun createProducts(product: Product){
         viewModelScope.launch {
 
             try {

@@ -3,6 +3,9 @@ package com.imidroid.jetpackcomposetask.presentation.screen.product
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,6 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.imidroid.jetpackcomposetask.domain.model.Product
+import com.imidroid.jetpackcomposetask.presentation.screen.product.component.ProductDetailForm
+import com.imidroid.jetpackcomposetask.presentation.screen.product.component.ProductList
 import com.imidroid.jetpackcomposetask.presentation.screen.productstate.UiState
 import com.imidroid.jetpackcomposetask.presentation.viewmodel.ProductViewModel
 import javax.annotation.meta.When
@@ -34,8 +40,9 @@ fun ProductManager(viewModel: ProductViewModel) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val message by viewModel.message.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-
-
+    var showEditProduct by remember { mutableStateOf(false) }
+    var showAddProduct by remember { mutableStateOf(false) }
+    var selectedProduct by remember { mutableStateOf<Product?>(null) }
 
     LaunchedEffect(message) {
         if (message?.isNotEmpty() == true) {
@@ -53,7 +60,7 @@ fun ProductManager(viewModel: ProductViewModel) {
                     IconButton(onClick = { viewModel.loadProducts() }) {
                         Icon(imageVector = Icons.Default.Refresh, contentDescription ="Refresh List of Products")
                     }
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { showAddProduct = true}) {
                         Icon(imageVector = Icons.Default.Add, contentDescription ="Add a new Product to List")
                     }
 
@@ -109,6 +116,9 @@ fun ProductManager(viewModel: ProductViewModel) {
     }
 
 
+
+
+
     if(showAddProduct) {
         ProductDetailForm(
             title = "Add Product",
@@ -123,14 +133,17 @@ fun ProductManager(viewModel: ProductViewModel) {
         )
     }
 
-    if (showEditProduct){
+
+    if (showEditProduct)
+    {
         ProductDetailForm(
-            title = " Edit Product",
+            title = "Edit Product",
             product = selectedProduct,
             onDismiss = {
                 showEditProduct = false
                 selectedProduct = null
             },
+
             onSave = { product ->
                 selectedProduct?.let {
                     viewModel.updateProduct(it.id, product)
@@ -138,8 +151,44 @@ fun ProductManager(viewModel: ProductViewModel) {
                 showEditProduct =false
                 selectedProduct = null
             }
-        )
+
+            )
+
     }
+
+
+
+//    if(showAddProduct) {
+//        ProductDetailForm(
+//            title = "Add Product",
+//            product = null,
+//            onDismiss = {
+//                showAddProduct = false
+//            },
+//            onSave = { product ->
+//                viewModel.createProducts(product)
+//                showAddProduct = false
+//            }
+//        )
+//    }
+//
+//    if (showEditProduct){
+//        ProductDetailForm(
+//            title = " Edit Product",
+//            product = selectedProduct,
+//            onDismiss = {
+//                showEditProduct = false
+//                selectedProduct = null
+//            },
+//            onSave = { product ->
+//                selectedProduct?.let {
+//                    viewModel.updateProduct(it.id, product)
+//                }
+//                showEditProduct =false
+//                selectedProduct = null
+//            }
+//        )
+//    }
 
 
 }
