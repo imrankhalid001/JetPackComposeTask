@@ -23,14 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.imidroid.jetpackcomposetask.domain.model.Product
 import com.imidroid.jetpackcomposetask.presentation.screen.product.component.ProductDetailForm
 import com.imidroid.jetpackcomposetask.presentation.screen.product.component.ProductList
 import com.imidroid.jetpackcomposetask.presentation.screen.productstate.UiState
 import com.imidroid.jetpackcomposetask.presentation.viewmodel.ProductViewModel
-import javax.annotation.meta.When
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,61 +61,51 @@ fun ProductManager(viewModel: ProductViewModel) {
                     IconButton(onClick = { showAddProduct = true}) {
                         Icon(imageVector = Icons.Default.Add, contentDescription ="Add a new Product to List")
                     }
-
                 }
-
-
             )
-
-
         },
         snackbarHost = {
             SnackbarHost(snackbarHostState)
         }
-
     ) { paddingValues ->
-
-        when (val state = uiState) {
-            is UiState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
+        Box(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            when (val state = uiState) {
+                is UiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
 
-            is UiState.Success -> {
-                ProductList(
-                    product = state.products,
-                    onEdit = { product->
-                        selectedProduct = product
-                        showEditProduct = true
-                    },
-                    onDelete = {
-                        viewModel.deleteProduct(it.id)
-                    },
-                    onPatch = {
-                        viewModel.patchProduct(it.id,"${it.title}(PATCH)")
-                    },
-                    modifier = Modifier.padding(paddingValues)
-                )
-            }
+                is UiState.Success -> {
+                    ProductList(
+                        product = state.products,
+                        onEdit = { product ->
+                            selectedProduct = product
+                            showEditProduct = true
+                        },
+                        onDelete = {
+                            viewModel.deleteProduct(it.id)
+                        },
+                        onPatch = {
+                            viewModel.patchProduct(it.id, "${it.title}(PATCH)")
+                        }
+                    )
+                }
 
-            is UiState.Error -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Error : ${state.message}")
+                is UiState.Error -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Error : ${state.message}")
+                    }
                 }
             }
         }
     }
-
-
-
-
 
     if(showAddProduct) {
         ProductDetailForm(
@@ -133,9 +121,7 @@ fun ProductManager(viewModel: ProductViewModel) {
         )
     }
 
-
-    if (showEditProduct)
-    {
+    if (showEditProduct) {
         ProductDetailForm(
             title = "Edit Product",
             product = selectedProduct,
@@ -143,52 +129,13 @@ fun ProductManager(viewModel: ProductViewModel) {
                 showEditProduct = false
                 selectedProduct = null
             },
-
             onSave = { product ->
                 selectedProduct?.let {
                     viewModel.updateProduct(it.id, product)
                 }
-                showEditProduct =false
+                showEditProduct = false
                 selectedProduct = null
             }
-
-            )
-
+        )
     }
-
-
-
-//    if(showAddProduct) {
-//        ProductDetailForm(
-//            title = "Add Product",
-//            product = null,
-//            onDismiss = {
-//                showAddProduct = false
-//            },
-//            onSave = { product ->
-//                viewModel.createProducts(product)
-//                showAddProduct = false
-//            }
-//        )
-//    }
-//
-//    if (showEditProduct){
-//        ProductDetailForm(
-//            title = " Edit Product",
-//            product = selectedProduct,
-//            onDismiss = {
-//                showEditProduct = false
-//                selectedProduct = null
-//            },
-//            onSave = { product ->
-//                selectedProduct?.let {
-//                    viewModel.updateProduct(it.id, product)
-//                }
-//                showEditProduct =false
-//                selectedProduct = null
-//            }
-//        )
-//    }
-
-
 }
