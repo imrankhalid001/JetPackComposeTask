@@ -60,4 +60,4 @@ The project is structured following **Clean Architecture** principles, divided i
 3.  Sync Gradle and run the app on an emulator or physical device.
 
 ---
-Developed by [Your Name/Handle]
+Developed by [[imran khalid](https://github.com/imrankhalid001)]
